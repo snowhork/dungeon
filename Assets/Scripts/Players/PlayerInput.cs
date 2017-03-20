@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Actions;
+using Maps;
 using Settings;
 using UniRx;
 using UnityEngine;
@@ -8,9 +10,10 @@ namespace Players
 {
     public class PlayerInput : MonoBehaviour
     {
-        public IObservable<Unit> OnActionFinished { get { return _actionFinishedSubject; } }
-        private Subject<Unit> _actionFinishedSubject;
+        public IObservable<BaseAction> OnAction { get { return _actionSubject; } }
+        private Subject<BaseAction> _actionSubject;
         private IntTransform _intTransform;
+        private MapInfo _mapInfo;
         private bool _inputtable;
 
         public bool Inputtable
@@ -19,15 +22,16 @@ namespace Players
             set { _inputtable = value; }
         }
 
-        public PlayerInput Initialize(IntTransform intTransform)
+        public PlayerInput Initialize(IntTransform intTransform, MapInfo mapInfo)
         {
             _intTransform = intTransform;
+            _mapInfo = mapInfo;
             return this;
         }
 
         private void Awake()
         {
-            _actionFinishedSubject = new Subject<Unit>();
+            _actionSubject = new Subject<BaseAction>();
         }
 
         private void Update()
@@ -35,17 +39,18 @@ namespace Players
             if (!_inputtable) return;
             if (Input.GetAxis("Horizontal") > 0)
             {
-                StartCoroutine(Rotate(Quaternion.AngleAxis(90f, Vector3.up)*transform.rotation));
+                _actionSubject.OnNext(new Move(_intTransform, _mapInfo, new IntVector(0, -1)));
+                //StartCoroutine(Rotate(Quaternion.AngleAxis(90f, Vector3.up)*transform.rotation));
             }
             if (Input.GetAxis("Horizontal") < 0)
             {
-                StartCoroutine(Rotate(Quaternion.AngleAxis(-90f, Vector3.up)*transform.rotation));
+                //StartCoroutine(Rotate(Quaternion.AngleAxis(-90f, Vector3.up)*transform.rotation));
             }
 
             if (Input.GetAxis("Vertical") > 0)
             {
-                _intTransform.Position += _intTransform.Forward;
-                StartCoroutine(Move(transform.position + Const.MapChipWidth * transform.forward));
+                //_intTransform.Position += _intTransform.Forward;
+                //StartCoroutine(Move(transform.position + Const.MapChipWidth * transform.forward));
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FieldObjects;
+using Utility;
 
 namespace Maps
 {
@@ -20,10 +21,43 @@ namespace Maps
             }
         }
 
+        public void Append(IntVector position, FieldObject fieldObject)
+        {
+            var info = GetMapChipInfo(position);
+            info.FieldObjects.Add(fieldObject);
+        }
+
+        public void Remove(IntVector position, FieldObject fieldObject)
+        {
+            var info = GetMapChipInfo(position);
+            info.FieldObjects.Remove(fieldObject);
+        }
+
+        public bool Movable(IntVector position, IntTransform intTransform)
+        {
+            var info = GetMapChipInfo(position);
+            return info.MapChip.Movable(intTransform);
+        }
+
+        private MapChipInfo GetMapChipInfo(IntVector position)
+        {
+            return _mapChipInfo[position.X, position.Y];
+        }
+
         private struct MapChipInfo
         {
-            private BaseMapChip _mapChip;
-            private List<FieldObject> _fieldObjects;
+            private readonly BaseMapChip _mapChip;
+            private readonly List<FieldObject> _fieldObjects;
+
+            public List<FieldObject> FieldObjects
+            {
+                get { return _fieldObjects; }
+            }
+
+            public BaseMapChip MapChip
+            {
+                get { return _mapChip; }
+            }
 
             public MapChipInfo(BaseMapChip mapChip)
             {

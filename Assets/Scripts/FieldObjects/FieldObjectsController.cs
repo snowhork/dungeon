@@ -4,6 +4,7 @@ using Maps;
 using Players;
 using UnityEngine;
 using UniRx;
+using Utility;
 
 namespace FieldObjects
 {
@@ -22,6 +23,7 @@ namespace FieldObjects
         private void Start()
         {
             _mapController = Instantiate(_mapControllerPrefs).Initialize();
+            _player.Initialize(new IntVector(1,2), _mapController.MapInfo);
 
             Observable.Return(Unit.Default)
                 .Delay(TimeSpan.FromSeconds(1f))

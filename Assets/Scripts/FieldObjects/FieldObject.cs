@@ -23,5 +23,11 @@ namespace FieldObjects
         {
              transform.position = new Vector3(IntTransform.Position.X*Const.MapChipWidth, 0f, IntTransform.Position.Y*Const.MapChipWidth);
         }
+
+        public virtual void Initialize(IntVector position)
+        {
+            IntTransform.Position = position;
+            SetTransform();
+        }
     }
 }
