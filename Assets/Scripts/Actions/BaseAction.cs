@@ -14,6 +14,7 @@ namespace Actions
             IntTransform = intTransform;
         }
 
+        public abstract bool IsValid { get; }
         public abstract bool Execute();
     }
 }

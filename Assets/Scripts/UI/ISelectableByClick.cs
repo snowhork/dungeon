@@ -1,7 +1,7 @@
 ﻿namespace UI
 {
-    public class ISelectableByClick
+    public interface ISelectableByClick
     {
-
+        void Select();
     }
 }

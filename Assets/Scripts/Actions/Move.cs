@@ -12,9 +12,14 @@ namespace Actions
             _direction = direction;
         }
 
+        public override bool IsValid
+        {
+            get { return MapInfo.Movable(IntTransform.Position + _direction, IntTransform); }
+        }
+
         public override bool Execute()
         {
-            if(!MapInfo.Movable(IntTransform.Position + _direction, IntTransform)) return false;
+            if(!IsValid) return false;
             IntTransform.Position += _direction;
             return true;
         }
