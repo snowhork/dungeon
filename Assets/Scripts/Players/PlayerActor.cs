@@ -1,4 +1,6 @@
-﻿using Actions;
+﻿using System.Collections.Generic;
+using Actions;
+using Animations;
 using FieldObjects;
 using Maps;
 using Settings;
@@ -33,6 +35,7 @@ namespace Players
 
         public override void TurnStart()
         {
+            print("trunstart");
             _selector.Selectable = true;
             var vectors = new IntVector[]
             {
@@ -42,6 +45,8 @@ namespace Players
                 new IntVector(0, -1),
             };
 
+            var moveArrows = new List<MoveArrow>();
+
             foreach (var vector in vectors)
             {
                 var move = new Move(IntTransform, MapInfo, vector);
@@ -50,9 +55,22 @@ namespace Players
                 moveArrow.transform.position = transform.position +
                                                new Vector3(vector.X * Const.MapChipWidth, 0,
                                                    vector.Y * Const.MapChipWidth);
+                moveArrows.Add(moveArrow);
                 moveArrow.OnSelected.Subscribe(_ =>
                 {
                     move.Execute();
+                    var anim = new MoveAnimation(transform, moveArrow.transform.position);
+                    StartCoroutine(anim.Start());
+                    _selector.Selectable = false;
+                    anim.OnAnimationFinished.Subscribe(__ =>
+                    {
+                        foreach (var arrow in moveArrows)
+                        {
+                            Destroy(arrow.gameObject);
+                        }
+                        moveArrows.Clear();
+                        ActionFinishedSubject.OnNext(Unit.Default);
+                    });
                 });
             }
         }
