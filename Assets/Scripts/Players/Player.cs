@@ -1,20 +1,17 @@
 ﻿using FieldObjects;
 using Maps;
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 using Utility;
 
 namespace Players
 {
-    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerActor))]
     public class Player : ActionObject
     {
-        private PlayerInput _playerInput;
-        private MapInfo _mapInfo;
         private bool _isPlayerTurn;
 
-        public void Awake()
+        private void Awake()
         {
             base.Awake();
             _isPlayerTurn = false;
@@ -22,31 +19,19 @@ namespace Players
 
         public IObservable<Unit> OnActionFinished
         {
-            get { return _playerInput.OnActionFinished; }
+            get { return Actor.OnActionFinished; }
         }
 
         public override void Action(MapInfo mapInfo)
         {
-            _mapInfo = mapInfo;
+            MapInfo = mapInfo;
             _isPlayerTurn = true;
-            _playerInput.Inputtable = true;
+            Actor.TurnStart();
         }
 
         private void Start()
         {
-            _playerInput = GetComponent<PlayerInput>().Initialize(IntTransform);
-            IntTransform.Position = new IntVector(1, 2);
-            IntTransform.Forward = new IntVector(1, 0);
-            SetTransform();
+            Actor = GetComponent<PlayerActor>().Initialize(IntTransform, MapInfo);
         }
-
-
-
-        private void Update()
-        {
-
-        }
-
-
     }
 }

@@ -1,18 +1,24 @@
-﻿using Maps;
+﻿using System;
+using Maps;
 using Utility;
 
 namespace FieldObjects
 {
     public abstract class ActionObject : FieldObject
     {
-        private IntVector _forward;
+        protected MapInfo MapInfo;
+        protected BaseActor Actor;
 
-        public IntVector Forward
+        public virtual void Action(MapInfo mapInfo)
         {
-            get { return _forward; }
-            set { _forward = value; }
+            MapInfo = mapInfo;
+            Actor.TurnStart();
         }
 
-        public abstract void Action(MapInfo mapInfo);
+        public virtual void Initialize(IntVector position, MapInfo mapInfo)
+        {
+            base.Initialize(position);
+            MapInfo = mapInfo;
+        }
     }
 }
