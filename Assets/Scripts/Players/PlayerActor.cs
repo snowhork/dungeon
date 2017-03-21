@@ -21,15 +21,6 @@ namespace Players
         {
             base.Initialize(intTransform, mapInfo);
             _selector = GetComponent<ClickSelector>();
-//            _input = GetComponent<PlayerInput>();
-//            _input.Initialize(IntTransform, MapInfo);
-//            _input.OnAction.Where(action => action.Execute()).Subscribe(action =>
-//            {
-//                _input.Inputtable = false;
-//                ActionFinishedSubject.OnNext(Unit.Default);
-//                Debug.Log("X: " + IntTransform.Position.X);
-//                Debug.Log("Y: " + IntTransform.Position.Y);
-//            }).AddTo(this);
             return this;
         }
 

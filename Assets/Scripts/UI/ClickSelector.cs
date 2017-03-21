@@ -16,10 +16,9 @@ namespace UI
         {
             if(!_selectable) return;
             if (!Input.GetMouseButtonDown(0)) return;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (!Physics.Raycast(ray, out hit)) return;
-            Debug.Log(hit.collider.name);
 
             var selectable = hit.collider.GetComponent<ISelectableByClick>();
             if(selectable == null) return;

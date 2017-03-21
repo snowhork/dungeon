@@ -32,7 +32,6 @@ namespace FieldObjects
                     _player.Action(_mapController.MapInfo);
                     _player.OnActionFinished.Subscribe(__ =>
                     {
-                        Debug.Log("actionfinished");
                         _player.Action(_mapController.MapInfo);
                     });
                 });
